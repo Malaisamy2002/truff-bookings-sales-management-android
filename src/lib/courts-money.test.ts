@@ -19,12 +19,24 @@ describe("multi-court money", () => {
 
   it("storedTurfAmount: stored value wins; else hours x rate x courts", () => {
     expect(
-      storedTurfAmount({ hours: 1, rate_per_hour: 500, courts: 3, turf_amount: 0 }),
+      storedTurfAmount({
+        hours: 1,
+        rate_per_hour: 500,
+        courts: 3,
+        turf_amount: 0,
+      }),
     ).toBe(1500);
     expect(
-      storedTurfAmount({ hours: 1, rate_per_hour: 500, courts: 3, turf_amount: 1400 }),
+      storedTurfAmount({
+        hours: 1,
+        rate_per_hour: 500,
+        courts: 3,
+        turf_amount: 1400,
+      }),
     ).toBe(1400); // stored snapshot wins over recompute
-    expect(storedTurfAmount({ hours: 2, rate_per_hour: 400, courts: 2 })).toBe(1600);
+    expect(storedTurfAmount({ hours: 2, rate_per_hour: 400, courts: 2 })).toBe(
+      1600,
+    );
     expect(storedTurfAmount({ hours: 1, rate_per_hour: 500 })).toBe(500); // no courts -> 1
   });
 
@@ -40,16 +52,16 @@ describe("multi-court money", () => {
       booking_date: "2026-09-29",
       hours: 1,
       courts: 1,
-      start_time: "18:00",
-      end_time: "19:00",
+      start_time: "6:00 PM",
+      end_time: "7:00 PM",
     });
     expect(one).toEqual([{ dayOffset: 0, from: 1080, to: 1140, n: 1 }]);
     const three = courtHourSegments({
       booking_date: "2026-09-29",
       hours: 1,
       courts: 3,
-      start_time: "18:00",
-      end_time: "19:00",
+      start_time: "6:00 PM",
+      end_time: "7:00 PM",
     });
     expect(three).toEqual([{ dayOffset: 0, from: 1080, to: 1140, n: 3 }]);
   });
@@ -94,7 +106,9 @@ describe("multi-court money", () => {
       ...DEFAULT_APP_SETTINGS,
       gstEnabled: true,
       gstRate: 18,
-      customTaxes: [{ id: "svc", label: "Service Charge", rate: 5, enabled: true }],
+      customTaxes: [
+        { id: "svc", label: "Service Charge", rate: 5, enabled: true },
+      ],
     });
     expect(tax.taxAmount).toBe(230);
     expect(tax.lines.map((x) => x.value)).toEqual([90, 90, 50]);
@@ -105,12 +119,12 @@ describe("multi-court money", () => {
       booking_date: "2026-09-29",
       hours: 2,
       courts: 2,
-      start_time: "23:00",
-      end_time: "01:00",
+      start_time: "11:00 PM",
+      end_time: "1:00 AM",
     });
     expect(segs).toEqual([
       { dayOffset: 0, from: 1380, to: 1440, n: 2 }, // 23:00-24:00 = 1h x 2 courts
-      { dayOffset: 1, from: 0, to: 60, n: 2 },      // 00:00-01:00 next day
+      { dayOffset: 1, from: 0, to: 60, n: 2 }, // 00:00-01:00 next day
     ]);
   });
 });
