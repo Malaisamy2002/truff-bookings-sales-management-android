@@ -94,6 +94,23 @@ jobs:
       - name: Initialize the Android project
         run: npx tauri android init --ci
 
+      # `tauri android init` writes Tauri's default launcher icons into the
+      # freshly generated project. Overlay the app's own icons from
+      # src-tauri/icons/android (same layout `tauri icon` produces) so the
+      # APK/AAB do not ship the default Tauri logo.
+      - name: Apply app launcher icons
+        run: |
+          RES=src-tauri/gen/android/app/src/main/res
+          test -d "$RES"
+          cp -R src-tauri/icons/android/. "$RES/"
+          for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            for f in ic_launcher ic_launcher_round ic_launcher_foreground; do
+              cmp "src-tauri/icons/android/mipmap-$d/$f.png" "$RES/mipmap-$d/$f.png"
+            done
+          done
+          cmp src-tauri/icons/android/values/ic_launcher_background.xml "$RES/values/ic_launcher_background.xml"
+          echo "Launcher icons applied."
+
       - name: Gradle cache
         uses: actions/cache@v4
         with:
