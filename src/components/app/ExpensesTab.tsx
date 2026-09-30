@@ -516,7 +516,7 @@ export function ExpensesTab() {
     exportToExcel(
       dateFilteredExpenses.map((e) => ({
         "Expense ID": e.expense_no ?? "",
-        Date: e.spent_at.slice(0, 10),
+        Date: formatDMY(e.spent_at.slice(0, 10)),
         Business: e.business,
         Category: e.category,
         Description: e.description ?? "",
