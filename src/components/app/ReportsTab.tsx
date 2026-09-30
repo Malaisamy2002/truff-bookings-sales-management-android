@@ -947,13 +947,30 @@ export function ReportsTab() {
               periodLabel: allTimeLabel,
               currencySymbol: printSettings.currencySymbol,
               kpis: [
-                allKpi("Net revenue", total((r) => r.NetRevenue)),
-                allKpi("Tax", total((r) => r.Tax)),
+                allKpi(
+                  "Net revenue",
+                  total((r) => r.NetRevenue),
+                ),
+                allKpi(
+                  "Tax",
+                  total((r) => r.Tax),
+                ),
                 allKpi("Revenue (incl. tax)", allRevenue),
-                allKpi("Profit", total((r) => r.Profit)),
+                allKpi(
+                  "Profit",
+                  total((r) => r.Profit),
+                ),
                 allKpi("Collected", allCollected),
-                allKpi("Expenses", total((r) => r.Expenses), true),
-                allKpi("Dues", total((r) => r.Dues), true),
+                allKpi(
+                  "Expenses",
+                  total((r) => r.Expenses),
+                  true,
+                ),
+                allKpi(
+                  "Dues",
+                  total((r) => r.Dues),
+                  true,
+                ),
                 {
                   ...allKpi("Collection rate", allCollectionRate),
                   isCurrency: false,
